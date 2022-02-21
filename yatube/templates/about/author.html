@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Об авторе проекта{% endblock %}
+{% block content %}
+{% load static %}
+<h1>Привет, я автор</h1>
+<p style="text-align:center"><span style="font-size:18px">И это мой проект!</span></p>
+
+<p>Мне нравится над ним работать, хотя это сложно и не всегда понятно. <s>Точнее почти всегда непонятно!</s></p>
+
+<p>Но кого это когда останавливало, правда?;)</p>
+
+<p>Посмотреть на изнанку проекта можно <a href="https://github.com/Helga61" target="_blank">здесь</a></p>
+
+<p style="text-align:center"><span style="font-size:18px">Основные этапы работы над проектом.</span></p>
+
+<ul>
+	<li>Что-то не работает</li>
+</ul>
+
+<p><img src="{% static 'img/dance.png' %}" /></p>
+
+<ul>
+	<li>Заработало!!! ...Или нет?</li>
+</ul>
+
+<p><img src="{% static 'img/about_author-min.png' %}" /></p>
+{% endblock %} 
