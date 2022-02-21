@@ -64,7 +64,6 @@ class PostURLTest(TestCase):
     def setUp(self):
         cache.clear()
         self.guest_client = Client()
-        self.user = User.objects.create_user(username='NoName')
         self.authorized_client = Client()
         self.authorized_client.force_login(self.user)
         self.post = Post.objects.get(pk=13)
@@ -85,21 +84,13 @@ class PostURLTest(TestCase):
                 'posts:post_detail', kwargs={'post_id': self.post.pk}
             ): 'posts/post_detail.html',
             reverse('posts:post_create'): 'posts/create_post.html',
+            reverse('posts:post_edit', kwargs={'post_id': self.post.pk}
+            ): 'posts/create_post.html',
         }
         for reverse_name, template in templates_pages_names.items():
             with self.subTest(reverse_name=reverse_name):
                 response = self.authorized_client.get(reverse_name)
                 self.assertTemplateUsed(response, template)
-
-    def test_page_post_edit_uses_correct_template(self):
-        """URL-адрес post_edit использует соответствующий шаблон."""
-        response = self.authorized_client.get(
-            reverse('posts:post_edit', kwargs={'post_id': self.post.pk})
-        )
-        with self.subTest():
-            user = self.authorized_client.force_login(PostURLTest.user)
-            if user == self.post.author:
-                self.assertTemplateUsed(response, 'posts/create_post.html')
 
 # Проверяем контекст и паджинатор
 
@@ -215,15 +206,12 @@ class PostURLTest(TestCase):
             'group': forms.fields.ChoiceField,
             'image': forms.fields.ImageField,
         }
-        with self.subTest():
-            user = self.authorized_client.force_login(PostURLTest.user)
-            if user == self.post.author:
-                for value, expected in form_fields.items():
-                    with self.subTest(value=value):
-                        form_field = response.context.get('form').fields.get(
-                            value
-                        )
-                        self.assertIsInstance(form_field, expected)
+        for value, expected in form_fields.items():
+            with self.subTest(value=value):
+                form_field = response.context.get('form').fields.get(
+                    value
+                )
+                self.assertIsInstance(form_field, expected)
 
 
 class PostCreateTest(TestCase):
