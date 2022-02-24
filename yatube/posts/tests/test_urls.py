@@ -1,3 +1,5 @@
+from http import HTTPStatus
+
 from django.contrib.auth import get_user_model
 from django.test import Client, TestCase
 
@@ -44,21 +46,20 @@ class PostURLTest(TestCase):
                 response = self.guest_client.get(url)
                 self.assertEqual(
                     response.status_code,
-                    200
+                    HTTPStatus.OK
                 )
 
     def test_url_unexisting_page(self):
         """Проверка ответа несуществующей страницы"""
         response = self.guest_client.get('/unexisting_page/')
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'core/404.html')
+        self.assertEqual(response.status_code, HTTPStatus.NOT_FOUND)
 
     # Доступность страниц для авторизованного пользователя
 
     def test_url_post_create(self):
         """Проверка доступа для авторизованного пользователя"""
         response = self.authorized_client.get('/create/')
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, HTTPStatus.OK)
 
     # Редиректы для неавторизованного пользователя
 
