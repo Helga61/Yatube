@@ -1,5 +1,6 @@
-from django.db import models
 from django.contrib.auth import get_user_model
+from django.db import models
+from django.db.models import UniqueConstraint
 
 User = get_user_model()
 
@@ -53,8 +54,7 @@ class Post(models.Model):
 class Comment (models.Model):
     post = models.ForeignKey(
         Post,
-        null=True,
-        on_delete=models.SET_NULL,
+        on_delete=models.CASCADE,
         related_name='comments'
     )
     author = models.ForeignKey(
@@ -82,6 +82,10 @@ class Follow(models.Model):
         User,
         on_delete=models.CASCADE,
         related_name='following'
+    )
+    UniqueConstraint(
+        fields=['user', 'author'],
+        name='subscription_unique'
     )
 
     def __str__(self):

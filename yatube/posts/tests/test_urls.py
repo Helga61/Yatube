@@ -1,7 +1,7 @@
-from django.test import TestCase, Client
 from django.contrib.auth import get_user_model
+from django.test import Client, TestCase
 
-from ..models import Post, Group
+from ..models import Group, Post
 
 User = get_user_model()
 
@@ -50,7 +50,8 @@ class PostURLTest(TestCase):
     def test_url_unexisting_page(self):
         """Проверка ответа несуществующей страницы"""
         response = self.guest_client.get('/unexisting_page/')
-        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'core/404.html')
 
     # Доступность страниц для авторизованного пользователя
 
