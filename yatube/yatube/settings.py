@@ -30,7 +30,9 @@ ALLOWED_HOSTS = [
     'localhost',
     '178.154.195.58',
     'testserver',
-    '[::1]'
+    '[::1]',
+    'www.helga61.pythonanywhere.com/',
+    'helga61.pythonanywhere.com/',
 ]
 
 
@@ -47,10 +49,12 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'core.apps.CoreConfig',
     'about.apps.AboutConfig',
-    'sorl.thumbnail'
+    'sorl.thumbnail',
+    'debug_toolbar',
 ]
 
 MIDDLEWARE = [
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -113,6 +117,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+INTERNAL_IPS = [
+    '127.0.0.1',
+]
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
